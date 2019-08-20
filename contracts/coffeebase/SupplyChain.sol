@@ -72,7 +72,7 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
     }
 
     modifier paidEnough(uint _price) {
-        require(msg.value >= _price);
+        require(msg.value >= _price, "Not enough was paid for the item");
         _;
     }
 
@@ -86,42 +86,42 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
     }
 
     modifier harvested(uint _upc) {
-        require(items[_upc].itemState == State.Harvested);
+        require(items[_upc].itemState == State.Harvested, "The item is not yet harvested");
         _;
     }
 
     modifier processed(uint _upc) {
-        require(items[_upc].itemState == State.Processed);
+        require(items[_upc].itemState == State.Processed, "The item is not yet processed");
         _;
     }
 
     modifier packed(uint _upc) {
-        require(items[_upc].itemState == State.Packed);
+        require(items[_upc].itemState == State.Packed, "The item is not yet packed");
         _;
     }
 
     modifier forSale(uint _upc) {
-        require(items[_upc].itemState == State.ForSale);
+        require(items[_upc].itemState == State.ForSale, "The item is not yet for sale");
         _;
     }
 
     modifier sold(uint _upc) {
-        require(items[_upc].itemState == State.Sold);
+        require(items[_upc].itemState == State.Sold, "The item is not yet sold");
         _;
     }
 
     modifier shipped(uint _upc) {
-        require(items[_upc].itemState == State.Shipped);
+        require(items[_upc].itemState == State.Shipped, "The item is not yet shipped");
         _;
     }
 
     modifier received(uint _upc) {
-        require(items[_upc].itemState == State.Received);
+        require(items[_upc].itemState == State.Received, "The item is not yet received");
         _;
     }
 
     modifier purchased(uint _upc) {
-        require(items[_upc].itemState == State.Purchased);
+        require(items[_upc].itemState == State.Purchased, "The item is not yet purchased");
         _;
     }
 
