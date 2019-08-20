@@ -15,7 +15,7 @@ contract ConsumerRole {
     }
 
     modifier onlyConsumer() {
-        require(isConsumer(msg.sender));
+        require(isConsumer(msg.sender), "Only Consumer allowed to perform this operation");
         _;
     }
 

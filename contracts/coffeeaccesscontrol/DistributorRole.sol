@@ -15,7 +15,7 @@ contract DistributorRole {
     }
 
     modifier onlyDistributor() {
-        require(isDistributor(msg.sender));
+        require(isDistributor(msg.sender), "Only Distributor allowed to perform this operation");
         _;
     }
 

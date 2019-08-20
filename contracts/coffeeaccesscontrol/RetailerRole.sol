@@ -15,7 +15,7 @@ contract RetailerRole {
     }
 
     modifier onlyRetailer() {
-        require(isRetailer(msg.sender));
+        require(isRetailer(msg.sender), "Only Retailer allowed to perform this operation");
         _;
     }
 
