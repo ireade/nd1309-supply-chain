@@ -21,23 +21,19 @@ contract Ownable is SupplyChain {
         _;
     }
 
-    /// Check if the calling address is the owner of the contract
     function isOwner() public view returns (bool) {
         return msg.sender == origOwner;
     }
 
-    /// Define a function to renounce ownership
     function renounceOwnership() public onlyOwner {
         emit TransferOwnership(origOwner, address(0));
         origOwner = address(0);
     }
 
-    /// Define a public function to transfer ownership
     function transferOwnership(address newOwner) public onlyOwner {
         _transferOwnership(newOwner);
     }
 
-    /// Define an internal function to transfer ownership
     function _transferOwnership(address newOwner) internal {
         require(newOwner != address(0));
         emit TransferOwnership(origOwner, newOwner);

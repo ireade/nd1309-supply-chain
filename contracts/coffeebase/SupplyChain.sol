@@ -1,8 +1,11 @@
 pragma solidity ^0.4.24;
 
 import "../coffeeaccesscontrol/FarmerRole.sol";
+import "../coffeeaccesscontrol/ConsumerRole.sol";
+import "../coffeeaccesscontrol/DistributorRole.sol";
+import "../coffeeaccesscontrol/RetailerRole.sol";
 
-contract SupplyChain is FarmerRole {
+contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole {
 
     address owner;
 
@@ -153,13 +156,13 @@ contract SupplyChain is FarmerRole {
         items[_upc] = Item({
             sku: sku,
             upc: _upc,
-            ownerID: owner, // @todo: Is this correct?
+            ownerID: owner,
             originFarmerID: _originFarmerID,
             originFarmName: _originFarmName,
             originFarmInformation: _originFarmInformation,
             originFarmLatitude: _originFarmLatitude,
             originFarmLongitude: _originFarmLongitude,
-            productID: _upc + sku, // @todo: Is this correct?
+            productID: _upc + sku,
             productNotes: _productNotes,
             itemState: defaultState,
             distributorID: address(0),
@@ -172,7 +175,8 @@ contract SupplyChain is FarmerRole {
         emit Harvested(_upc);
     }
 
-    // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
+    // @todo
+    // Define a function 'process tItem' that allows a farmer to mark an item 'Processed'
     function processItem(uint _upc) public onlyFarmer harvested(_upc)
         // Call modifier to check if upc has passed previous supply chain stage
 
@@ -185,6 +189,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
     function packItem(uint _upc) public
         // Call modifier to check if upc has passed previous supply chain stage
@@ -198,6 +203,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
     function sellItem(uint _upc, uint _price) public
         // Call modifier to check if upc has passed previous supply chain stage
@@ -211,6 +217,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'buyItem' that allows the disributor to mark an item 'Sold'
     // Use the above defined modifiers to check if the item is available for sale, if the buyer has paid enough,
     // and any excess ether sent is refunded back to the buyer
@@ -231,6 +238,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
     // Use the above modifers to check if the item is sold
     function shipItem(uint _upc) public
@@ -245,6 +253,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'receiveItem' that allows the retailer to mark an item 'Received'
     // Use the above modifiers to check if the item is shipped
     function receiveItem(uint _upc) public
@@ -258,6 +267,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'purchaseItem' that allows the consumer to mark an item 'Purchased'
     // Use the above modifiers to check if the item is received
     function purchaseItem(uint _upc) public
@@ -271,6 +281,7 @@ contract SupplyChain is FarmerRole {
 
     }
 
+    // @todo
     // Define a function 'fetchItemBufferOne' that fetches the data
     function fetchItemBufferOne(uint _upc) public view returns
     (
@@ -300,6 +311,7 @@ contract SupplyChain is FarmerRole {
         );
     }
 
+    // @todo
     // Define a function 'fetchItemBufferTwo' that fetches the data
     function fetchItemBufferTwo(uint _upc) public view returns
     (

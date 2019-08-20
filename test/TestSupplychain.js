@@ -41,6 +41,7 @@ contract('SupplyChain', function(accounts) {
     console.log("Retailer: accounts[3] ", accounts[3])
     console.log("Consumer: accounts[4] ", accounts[4])
 
+    // @todo
     // 1st Test
     it("Testing smart contract function harvestItem() that allows a farmer to harvest coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -72,8 +73,9 @@ contract('SupplyChain', function(accounts) {
         assert.equal(resultBufferOne[7], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude')
         assert.equal(resultBufferTwo[5], 0, 'Error: Invalid item State')
         assert.equal(eventEmitted, true, 'Invalid event emitted')        
-    })    
+    })
 
+    // @todo
     // 2nd Test
     it("Testing smart contract function processItem() that allows a farmer to process coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -92,8 +94,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
         
-    })    
+    })
 
+    // @todo
     // 3rd Test
     it("Testing smart contract function packItem() that allows a farmer to pack coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -112,8 +115,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
         
-    })    
+    })
 
+    // @todo
     // 4th Test
     it("Testing smart contract function sellItem() that allows a farmer to sell coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -132,8 +136,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
           
-    })    
+    })
 
+    // @todo
     // 5th Test
     it("Testing smart contract function buyItem() that allows a distributor to buy coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -153,8 +158,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
         
-    })    
+    })
 
+    // @todo
     // 6th Test
     it("Testing smart contract function shipItem() that allows a distributor to ship coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -173,8 +179,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
               
-    })    
+    })
 
+    // @todo
     // 7th Test
     it("Testing smart contract function receiveItem() that allows a retailer to mark coffee received", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -193,8 +200,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
              
-    })    
+    })
 
+    // @todo
     // 8th Test
     it("Testing smart contract function purchaseItem() that allows a consumer to purchase coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -213,8 +221,9 @@ contract('SupplyChain', function(accounts) {
 
         // Verify the result set
         
-    })    
+    })
 
+    // @todo
     // 9th Test
     it("Testing smart contract function fetchItemBufferOne() that allows anyone to fetch item details from blockchain", async() => {
         const supplyChain = await SupplyChain.deployed()
@@ -226,6 +235,7 @@ contract('SupplyChain', function(accounts) {
         
     })
 
+    // @todo
     // 10th Test
     it("Testing smart contract function fetchItemBufferTwo() that allows anyone to fetch item details from blockchain", async() => {
         const supplyChain = await SupplyChain.deployed()
