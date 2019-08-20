@@ -1,18 +1,14 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.24;
 
-import "../coffeeaccesscontrol/FarmerRole.sol";
 import "../coffeeaccesscontrol/ConsumerRole.sol";
 import "../coffeeaccesscontrol/DistributorRole.sol";
+import "../coffeeaccesscontrol/FarmerRole.sol";
 import "../coffeeaccesscontrol/RetailerRole.sol";
 
 contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole {
 
     address owner;
-
-    // Define a variable called 'upc' for Universal Product Code (UPC)
     uint  upc;
-
-    // Define a variable called 'sku' for Stock Keeping Unit (SKU)
     uint  sku;
 
     mapping(uint => Item) items; // (upc => Item)
@@ -84,7 +80,9 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
         _;
         uint _price = items[_upc].productPrice;
         uint amountToReturn = msg.value - _price;
-        items[_upc].consumerID.transfer(amountToReturn);
+
+        address payable consumerAddressPayable = _make_payable(items[_upc].consumerID);
+        consumerAddressPayable.transfer(amountToReturn);
     }
 
     modifier harvested(uint _upc) {
@@ -128,7 +126,7 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
     }
 
 
-    /* Constructor * Kill ************************ */
+    /* Constructor & utils ************************ */
 
     constructor() public payable {
         owner = msg.sender;
@@ -138,20 +136,27 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
 
     function kill() public {
         if (msg.sender == owner) {
-            selfdestruct(owner);
+            address payable ownerAddressPayable = _make_payable(owner);
+            selfdestruct(ownerAddressPayable);
         }
+    }
+
+    function _make_payable(address x) internal pure returns (address payable) {
+        return address(uint160(x));
     }
 
     /* Functions ************************ */
 
+    // 1, "0x14723a09acff6d2a60dcdf7aa4aff308fddc160c", "Rey Farms", "Bourdillon", "-38.239770", "144.341490", "Best beans!"
+
     function harvestItem(
         uint _upc,
         address _originFarmerID,
-        string _originFarmName,
-        string _originFarmInformation,
-        string _originFarmLatitude,
-        string _originFarmLongitude,
-        string _productNotes) public onlyFarmer
+        string memory _originFarmName,
+        string memory _originFarmInformation,
+        string memory _originFarmLatitude,
+        string memory _originFarmLongitude,
+        string memory _productNotes) public onlyFarmer
     {
         items[_upc] = Item({
             sku: sku,
@@ -164,139 +169,92 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
             originFarmLongitude: _originFarmLongitude,
             productID: _upc + sku,
             productNotes: _productNotes,
+            productPrice: uint(0),
             itemState: defaultState,
             distributorID: address(0),
             retailerID: address(0),
             consumerID: address(0)
-        });
+            });
 
         sku = sku + 1;
 
         emit Harvested(_upc);
     }
 
-    // @todo
-    // Define a function 'process tItem' that allows a farmer to mark an item 'Processed'
     function processItem(uint _upc) public onlyFarmer harvested(_upc)
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Call modifier to verify caller of this function
-
     {
-        // Update the appropriate fields
-
-        // Emit the appropriate event
-
+        items[_upc].itemState = State.Processed;
+        emit Processed(_upc);
     }
 
-    // @todo
-    // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
-    function packItem(uint _upc) public
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Call modifier to verify caller of this function
-
+    function packItem(uint _upc) public onlyFarmer processed(_upc)
     {
-        // Update the appropriate fields
-
-        // Emit the appropriate event
-
+        items[_upc].itemState = State.Packed;
+        emit Packed(_upc);
     }
 
-    // @todo
-    // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
-    function sellItem(uint _upc, uint _price) public
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Call modifier to verify caller of this function
-
+    function sellItem(uint _upc, uint _price) public onlyFarmer packed(_upc)
     {
-        // Update the appropriate fields
-
-        // Emit the appropriate event
-
+        items[_upc].itemState = State.ForSale;
+        items[_upc].productPrice = _price;
+        emit ForSale(_upc);
     }
 
-    // @todo
-    // Define a function 'buyItem' that allows the disributor to mark an item 'Sold'
-    // Use the above defined modifiers to check if the item is available for sale, if the buyer has paid enough,
-    // and any excess ether sent is refunded back to the buyer
-    function buyItem(uint _upc) public payable
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Call modifer to check if buyer has paid enough
-
-        // Call modifer to send any excess ether back to buyer
-
+    function buyItem(uint _upc) public payable onlyDistributor forSale(_upc) paidEnough(items[_upc].productPrice)
     {
+        items[_upc].ownerID = owner;
+        items[_upc].distributorID = msg.sender;
+        items[_upc].itemState = State.Sold;
 
-        // Update the appropriate fields - ownerID, distributorID, itemState
+        // @todo: check this works
+        address payable originFarmerAddressPayable = _make_payable(items[_upc].originFarmerID);
+        originFarmerAddressPayable.transfer(msg.value);
 
-        // Transfer money to farmer
-
-        // emit the appropriate event
-
+        emit Sold(_upc);
     }
 
-    // @todo
-    // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
-    // Use the above modifers to check if the item is sold
-    function shipItem(uint _upc) public
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Call modifier to verify caller of this function
-
+    function shipItem(uint _upc) public onlyDistributor sold(_upc)
     {
-        // Update the appropriate fields
-
-        // Emit the appropriate event
-
+        items[_upc].itemState = State.Shipped;
+        emit Shipped(_upc);
     }
 
-    // @todo
-    // Define a function 'receiveItem' that allows the retailer to mark an item 'Received'
-    // Use the above modifiers to check if the item is shipped
-    function receiveItem(uint _upc) public
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Access Control List enforced by calling Smart Contract / DApp
+    function receiveItem(uint _upc) public onlyRetailer shipped(_upc)
     {
-        // Update the appropriate fields - ownerID, retailerID, itemState
-
-        // Emit the appropriate event
-
+        items[_upc].ownerID = owner;
+        items[_upc].retailerID = msg.sender;
+        items[_upc].itemState = State.Received;
+        emit Received(_upc);
     }
 
-    // @todo
-    // Define a function 'purchaseItem' that allows the consumer to mark an item 'Purchased'
-    // Use the above modifiers to check if the item is received
-    function purchaseItem(uint _upc) public
-        // Call modifier to check if upc has passed previous supply chain stage
-
-        // Access Control List enforced by calling Smart Contract / DApp
+    function purchaseItem(uint _upc) public onlyConsumer received(_upc)
     {
-        // Update the appropriate fields - ownerID, consumerID, itemState
-
-        // Emit the appropriate event
-
+        items[_upc].ownerID = owner;
+        items[_upc].consumerID = msg.sender;
+        items[_upc].itemState = State.Purchased;
+        emit Purchased(_upc);
     }
 
-    // @todo
-    // Define a function 'fetchItemBufferOne' that fetches the data
     function fetchItemBufferOne(uint _upc) public view returns
     (
         uint itemSKU,
         uint itemUPC,
         address ownerID,
         address originFarmerID,
-        string originFarmName,
-        string originFarmInformation,
-        string originFarmLatitude,
-        string originFarmLongitude
+        string memory originFarmName,
+        string memory originFarmInformation,
+        string memory originFarmLatitude,
+        string memory originFarmLongitude
     )
     {
-        // Assign values to the 8 parameters
-
+        itemSKU = items[_upc].sku;
+        itemUPC = items[_upc].upc;
+        ownerID = items[_upc].ownerID;
+        originFarmerID = items[_upc].originFarmerID;
+        originFarmName = items[_upc].originFarmName;
+        originFarmInformation = items[_upc].originFarmInformation;
+        originFarmLatitude = items[_upc].originFarmLatitude;
+        originFarmLongitude = items[_upc].originFarmLongitude;
 
         return
         (
@@ -311,14 +269,12 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
         );
     }
 
-    // @todo
-    // Define a function 'fetchItemBufferTwo' that fetches the data
     function fetchItemBufferTwo(uint _upc) public view returns
     (
         uint itemSKU,
         uint itemUPC,
         uint productID,
-        string productNotes,
+        string memory productNotes,
         uint productPrice,
         uint itemState,
         address distributorID,
@@ -326,8 +282,15 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
         address consumerID
     )
     {
-        // Assign values to the 9 parameters
-
+        itemSKU = items[_upc].sku;
+        itemUPC = items[_upc].upc;
+        productID = items[_upc].productID;
+        productNotes = items[_upc].productNotes;
+        productPrice = items[_upc].productPrice;
+        itemState = uint(items[_upc].itemState);
+        distributorID = items[_upc].distributorID;
+        retailerID = items[_upc].retailerID;
+        consumerID = items[_upc].consumerID;
 
         return
         (
