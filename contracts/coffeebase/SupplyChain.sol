@@ -62,7 +62,7 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
     /* Modifiers ************************ */
 
     modifier onlyOwner() {
-        require(msg.sender == contractOwner);
+        require(msg.sender == contractOwner, "Only the owner can perform this operation");
         _;
     }
 
@@ -146,8 +146,6 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
     }
 
     /* Functions ************************ */
-
-    // 1, "0x14723a09acff6d2a60dcdf7aa4aff308fddc160c", "Rey Farms", "Bourdillon", "-38.239770", "144.341490", "Best beans!"
 
     function harvestItem(
         uint _upc,
