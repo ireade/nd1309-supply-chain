@@ -1,6 +1,8 @@
 pragma solidity ^0.4.24;
 
-contract SupplyChain {
+import "../coffeeaccesscontrol/FarmerRole.sol";
+
+contract SupplyChain is FarmerRole {
 
     address owner;
 
@@ -75,7 +77,6 @@ contract SupplyChain {
         _;
     }
 
-    // Define a modifier that checks the price and refunds the remaining balance
     modifier checkValue(uint _upc) {
         _;
         uint _price = items[_upc].productPrice;
@@ -83,88 +84,96 @@ contract SupplyChain {
         items[_upc].consumerID.transfer(amountToReturn);
     }
 
-    // Define a modifier that checks if an item.state of a upc is Harvested
     modifier harvested(uint _upc) {
         require(items[_upc].itemState == State.Harvested);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is Processed
     modifier processed(uint _upc) {
-
+        require(items[_upc].itemState == State.Processed);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is Packed
     modifier packed(uint _upc) {
-
+        require(items[_upc].itemState == State.Packed);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is ForSale
     modifier forSale(uint _upc) {
-
+        require(items[_upc].itemState == State.ForSale);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is Sold
     modifier sold(uint _upc) {
-
+        require(items[_upc].itemState == State.Sold);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is Shipped
     modifier shipped(uint _upc) {
-
+        require(items[_upc].itemState == State.Shipped);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is Received
     modifier received(uint _upc) {
-
+        require(items[_upc].itemState == State.Received);
         _;
     }
 
-    // Define a modifier that checks if an item.state of a upc is Purchased
     modifier purchased(uint _upc) {
-
+        require(items[_upc].itemState == State.Purchased);
         _;
     }
 
 
-    /* Constructor ************************ */
+    /* Constructor * Kill ************************ */
 
-    // In the constructor set 'owner' to the address that instantiated the contract
-    // and set 'sku' to 1
-    // and set 'upc' to 1
     constructor() public payable {
         owner = msg.sender;
         sku = 1;
         upc = 1;
     }
 
-    /* Functions ************************ */
-
-    // Define a function 'kill' if required
     function kill() public {
         if (msg.sender == owner) {
             selfdestruct(owner);
         }
     }
 
-    // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
-    function harvestItem(uint _upc, address _originFarmerID, string _originFarmName, string _originFarmInformation, string _originFarmLatitude, string _originFarmLongitude, string _productNotes) public
+    /* Functions ************************ */
+
+    function harvestItem(
+        uint _upc,
+        address _originFarmerID,
+        string _originFarmName,
+        string _originFarmInformation,
+        string _originFarmLatitude,
+        string _originFarmLongitude,
+        string _productNotes) public onlyFarmer
     {
-        // Add the new item as part of Harvest
+        items[_upc] = Item({
+            sku: sku,
+            upc: _upc,
+            ownerID: owner, // @todo: Is this correct?
+            originFarmerID: _originFarmerID,
+            originFarmName: _originFarmName,
+            originFarmInformation: _originFarmInformation,
+            originFarmLatitude: _originFarmLatitude,
+            originFarmLongitude: _originFarmLongitude,
+            productID: _upc + sku, // @todo: Is this correct?
+            productNotes: _productNotes,
+            itemState: defaultState,
+            distributorID: address(0),
+            retailerID: address(0),
+            consumerID: address(0)
+        });
 
-        // Increment sku
         sku = sku + 1;
-        // Emit the appropriate event
 
+        emit Harvested(_upc);
     }
 
     // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
-    function processItem(uint _upc) public
+    function processItem(uint _upc) public onlyFarmer harvested(_upc)
         // Call modifier to check if upc has passed previous supply chain stage
 
         // Call modifier to verify caller of this function

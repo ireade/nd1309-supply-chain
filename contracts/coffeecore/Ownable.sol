@@ -1,6 +1,8 @@
 pragma solidity ^0.4.24;
 
-contract Ownable {
+import "../coffeebase/SupplyChain.sol";
+
+contract Ownable is SupplyChain {
     address private origOwner;
 
     event TransferOwnership(address indexed oldOwner, address indexed newOwner);
