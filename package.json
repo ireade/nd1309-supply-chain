@@ -9,7 +9,8 @@
     "compile": "truffle compile",
     "migrate": "truffle migrate --reset",
     "test": "truffle test",
-    "deploy": "truffle migrate --reset --network rinkeby"
+    "deploy": "truffle migrate --reset --network rinkeby",
+    "host": "ipfs add -r website"
   },
   "keywords": [],
   "license": "MIT",
