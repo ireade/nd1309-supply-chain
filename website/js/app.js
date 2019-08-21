@@ -92,7 +92,7 @@ App = {
     },
 
     initSupplyChain: function () {
-        var jsonSupplyChain = '../../build/contracts/SupplyChain.json';
+        var jsonSupplyChain = './SupplyChain.json';
 
         $.getJSON(jsonSupplyChain, function (data) {
             console.log('data', data);
