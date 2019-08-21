@@ -19,8 +19,6 @@ Prove the authenticity of coffee using the Ethereum blockchain.
 
 Frontend Application hosted on IPFS at permanent location [/ipfs/QmfBa6iKKAg5xzNDG4Go2aAZHVMSnkcXzcMcGdvWBTXQ2H](https://gateway.ipfs.io/ipfs/QmfBa6iKKAg5xzNDG4Go2aAZHVMSnkcXzcMcGdvWBTXQ2H/);
 
-### Individual files
-
 ```
 added QmRXgpSSdL5vpvepVqJ8KAQw3vMgiJiezgUcothzqXzWam website/css/style.css
 added QmQJ2GBjWx17NYDRvSNXpJptkBWbpbTTryCrD9pkxEqXDn website/index.html
@@ -29,6 +27,8 @@ added QmW5qd5uHjzK5JnEkXJ5LzpYaNTna2xY4k5myZKF9hUzJL website/js/truffle-contract
 added Qmduc63Ld5riL4oBZKXZwJG5tSyMUpWdnNp6EL9kHvmxw8 website/css
 added QmXQju5yGTRXfGWXBYbm63gfZfuA7FGHwyHFxwKfhSWMiJ website/js
 added QmTwE6W4tcG62rD5XhmGet5kCv9V9xSrRgLnzLaQPXKJUr website
+
+Published to QmfBa6iKKAg5xzNDG4Go2aAZHVMSnkcXzcMcGdvWBTXQ2H: /ipfs/QmTwE6W4tcG62rD5XhmGet5kCv9V9xSrRgLnzLaQPXKJUr
 ```
 
 
