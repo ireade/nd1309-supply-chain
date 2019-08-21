@@ -8,11 +8,15 @@
     "dev": "lite-server",
     "compile": "truffle compile",
     "migrate": "truffle migrate --reset",
-    "test": "truffle test"
+    "test": "truffle test",
+    "deploy": "truffle migrate --reset --network rinkeby"
   },
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
     "lite-server": "2.4.0"
+  },
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.16"
   }
 }

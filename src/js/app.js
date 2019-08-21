@@ -158,8 +158,6 @@ App = {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
-        //console.log(harvestItem);
-
         App.contracts.SupplyChain.deployed().then(function (instance) {
             return instance.harvestItem(
                 App.upc,
@@ -280,8 +278,9 @@ App = {
     },
 
     fetchItemBufferOne: function () {
-        ///   event.preventDefault();
-        ///    var processId = parseInt($(event.target).data('id'));
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
         App.upc = $('#upc').val();
         console.log('upc', App.upc);
 
@@ -296,8 +295,8 @@ App = {
     },
 
     fetchItemBufferTwo: function () {
-        ///    event.preventDefault();
-        ///    var processId = parseInt($(event.target).data('id'));
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function (instance) {
             return instance.fetchItemBufferTwo.call(App.upc);
@@ -327,7 +326,6 @@ App = {
         }).catch(function (err) {
             console.log(err.message);
         });
-
     }
 };
 
