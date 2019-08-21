@@ -6,6 +6,8 @@
   "scripts": {
     "develop": "truffle develop",
     "dev": "lite-server",
+    "compile": "truffle compile",
+    "migrate": "truffle migrate --reset",
     "test": "truffle test"
   },
   "keywords": [],

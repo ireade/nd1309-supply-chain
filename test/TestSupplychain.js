@@ -1,27 +1,27 @@
-const SupplyChain = artifacts.require('SupplyChain');
+const SupplyChain = artifacts.require("SupplyChain");
 
 let accounts;
 let supplyChain;
 
-const emptyAddress = '0x00000000000000000000000000000000000000';
+const emptyAddress = "0x00000000000000000000000000000000000000";
 
 let sku = 1;
 let upc = 1;
 let ownerID = emptyAddress;
 let originFarmerID = emptyAddress;
-const originFarmName = "John Doe";
-const originFarmInformation = "Yarray Valley";
-const originFarmLatitude = "-38.239770";
-const originFarmLongitude = "144.341490";
+const originFarmName = "Rey Farms";
+const originFarmInformation = "Lagos";
+const originFarmLatitude = "6.451140";
+const originFarmLongitude = "3.388400";
 let productID = sku + upc;
 const productNotes = "Best beans for Espresso";
-const productPrice = "100";
+const productPrice = web3.utils.toWei("1", "ether");
 let itemState = 0;
 let distributorID = emptyAddress;
 let retailerID = emptyAddress;
 let consumerID = emptyAddress;
 
-contract('SupplyChain', function (acc) {
+contract("SupplyChain", function (acc) {
     accounts = acc;
 
     ownerID = accounts[0];
