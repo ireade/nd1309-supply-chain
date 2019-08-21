@@ -1,6 +1,11 @@
 # Fair Trade Coffee Supply Chain
 
-Intro...
+Prove the authenticity of coffee using the Ethereum blockchain.
+
+Todo:
+- Data modelling diagram
+- Host on IPFS
+- Libraries
 
 ## Project Write-Up
 
@@ -9,11 +14,11 @@ Intro...
 [Activity Diagram](./uml/Activity%20Diagram.jpeg)<br>
 [Sequence Diagram](./uml/Sequence%20Diagram.jpeg)<br>
 [State Diagram](./uml/State%20Diagram.jpeg)<br>
-[Sequence Diagram]()<br>
+[Data Modelling]()<br>
 
 ### Libraries
 
-???
+**Truffle**: Used for developing, testing, and deploying my smart contracts
 
 ### IPFS
 
@@ -144,19 +149,8 @@ Summary
 
 ## Development Notes
 
-### Versions
-
 Truffle v5.0.31 (core: 5.0.31)<br>
-OpenZeppelin v2.1.2<br>
 Solidity v0.5.0 (solc-js)<br>
 Node v10.16.0<br>
 Web3.js v1.2.1<br>
-
-
-### Testing
-
-```js
-harvestItem(1, "0x14723a09acff6d2a60dcdf7aa4aff308fddc160c", "Rey Farms", "Lagos", "6.451140", "3.388400", "Best beans!")
-```
-
 

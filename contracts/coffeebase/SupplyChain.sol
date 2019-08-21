@@ -204,7 +204,6 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole 
         items[_upc].distributorID = msg.sender;
         items[_upc].itemState = State.Sold;
 
-        // @todo: check this works
         address payable originFarmerAddressPayable = _make_payable(items[_upc].originFarmerID);
         originFarmerAddressPayable.transfer(msg.value);
 
